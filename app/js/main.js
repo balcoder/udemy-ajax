@@ -38,3 +38,30 @@ bitcoinBtnXhr.addEventListener("click", function () {
   XHR.open("GET", bitcoinApiUrl);
   XHR.send();
 });
+
+// Get Bitcoin price using fetch
+let usdFetch = document.querySelector("#usd-fetch");
+let euroFetch = document.querySelector("#euro-fetch");
+let bitcoinBtnFetch = document.querySelector("#btn-bitcoin-fetch");
+
+bitcoinBtnFetch.addEventListener("click", function () {
+  fetch(bitcoinApiUrl)
+    .then(handleErrors)
+    .then(function (data) {
+      return data.json();
+    })
+    .then(function (data) {
+      usdFetch.innerHTML = `USD: ${data.bpi.USD.rate}`;
+      euroFetch.innerHTML = `EURO: ${data.bpi.EUR.rate}`;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+});
+
+function handleErrors(request) {
+  if (!request.ok) {
+    throw Error(request.status);
+  }
+  return request;
+}
