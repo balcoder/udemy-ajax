@@ -8,3 +8,11 @@ img {
 
 button {
   margin: 20px; }
+
+#usd,
+#euro,
+#usd-fetch,
+#euro-fetch {
+  color: green;
+  font-weight: bold;
+  font-size: 22px; }
