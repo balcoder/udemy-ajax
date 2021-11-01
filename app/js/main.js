@@ -65,3 +65,38 @@ function handleErrors(request) {
   }
   return request;
 }
+
+// Get Random user
+
+const userUrl = "https://randomuser.me/api/";
+const userImg = document.querySelector("#user-img");
+const userName = document.querySelector("#user-name");
+const fullName = document.querySelector("#name");
+const userEmail = document.querySelector("#user-email");
+const userCity = document.querySelector("#user-city");
+const userBtn = document.querySelector("#user-button");
+
+userBtn.addEventListener("click", function () {
+  fetch(userUrl)
+    .then(handleErrors)
+    .then(parseJson)
+    .then(updateUserInfo)
+    .catch(printError);
+});
+
+function parseJson(response) {
+  return response.json();
+}
+
+function updateUserInfo(data) {
+  let info = data.results[0];
+  userImg.setAttribute("src", info.picture.medium);
+  fullName.innerHTML = `${info.name.title} ${info.name.first} ${info.name.last}`;
+  userName.innerHTML = `Username: ${info.login.username}`;
+  userEmail.innerHTML = `Email: ${info.email}`;
+  userCity.innerHTML = `City: ${info.location.city}`;
+}
+
+function printError(error) {
+  console.log(error);
+}

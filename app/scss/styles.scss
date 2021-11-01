@@ -1,3 +1,10 @@
+hr {
+  border: 1px solid black;
+  width: 95%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 img {
   height: 200px;
 }
@@ -12,6 +19,13 @@ button {
   margin: 20px;
 }
 
+#bitcoin,
+#bitcoin-fetch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #usd,
 #euro,
 #usd-fetch,
@@ -19,4 +33,44 @@ button {
   color: green;
   font-weight: bold;
   font-size: 22px;
+}
+
+#randomUser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #eee;
+  padding: 20px;
+  border-radius: 5%;
+  text-align: center;
+}
+
+#user-content {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+}
+
+#user-info {
+  padding: 5px;
+}
+
+#user-img {
+  border-radius: 50%;
+}
+#user-button {
+  display: flex;
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: teal;
+    color: whitesmoke;
+    font-size: 18px;
+    border: none;
+    border-radius: 15px;
+  }
+  button:hover {
+    opacity: 0.9;
+  }
 }
