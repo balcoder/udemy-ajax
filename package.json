@@ -31,7 +31,9 @@
     "gulp-uglify": "^3.0.2",
     "gulp-useref": "^4.0.1"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jquery": "^3.6.0"
+  },
   "browserslist": [
     "defaults",
     "> .2%"

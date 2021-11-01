@@ -1,5 +1,4 @@
 // Get dog image
-
 let dogPic = document.getElementById("photo");
 let getRndDogBtn = document.getElementById("dogBtn");
 
@@ -100,3 +99,68 @@ function updateUserInfo(data) {
 function printError(error) {
   console.log(error);
 }
+
+// Using jQuery for AJAX calls
+$("#jqueryBtn").click(function () {
+  $.ajax({
+    method: "GET",
+    url: "https://baconipsum.com/api/?type=meat-and-filler",
+    dataType: "json",
+  })
+    .done(function (data) {
+      $("#meat").text(data);
+    })
+    .fail(function () {
+      console.log("Fail");
+    });
+});
+
+$("#getBtn").click(function () {
+  $.get("https://api.github.com/users/balcoder")
+    .done(function (data) {
+      console.log(data);
+    })
+    .fail(function () {
+      console.log("Error!");
+    });
+});
+$("#postBtn").click(function () {
+  let data = { name: "John", time: "2pm" };
+  $.post("www.idontthinkthiswillwork.com", data)
+    .done(function () {
+      console.log("Hi!");
+    })
+    .fail(function () {
+      console.log("Error!");
+    });
+});
+$("#getJsonBtn").click(function () {
+  $.getJSON("https://api.github.com/users/balcoder")
+    .done((data) => {
+      console.log(data);
+    })
+    .fail(function () {
+      console.log("We got a Problem");
+    });
+});
+
+// Get random picture of Cat
+$("#getCat").click(function () {
+  let flickerApi =
+    "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON(flickerApi, {
+    tags: "cat",
+    tagmode: "any",
+    format: "json",
+  }).done(function (data) {
+    let randNum = Math.floor(Math.random() * 21);
+    console.log(data.items[randNum].link);
+    // $.each(data.items, function (i, item) {
+    //   $("<img>").attr("src", item.media.m).appendTo("#randomCat");
+    //   if (i === 5) {
+    //     return false;
+    //   }
+    // });
+    $("#cat").attr("src", data.items[randNum].media.m);
+  });
+});
