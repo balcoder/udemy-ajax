@@ -144,7 +144,7 @@ $("#getJsonBtn").click(function () {
     });
 });
 
-// Get random picture of Cat
+// Get random picture of Cat using jQuery
 $("#getCat").click(function () {
   let flickerApi =
     "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -152,15 +152,59 @@ $("#getCat").click(function () {
     tags: "cat",
     tagmode: "any",
     format: "json",
-  }).done(function (data) {
-    let randNum = Math.floor(Math.random() * 21);
-    console.log(data.items[randNum].link);
-    // $.each(data.items, function (i, item) {
-    //   $("<img>").attr("src", item.media.m).appendTo("#randomCat");
-    //   if (i === 5) {
-    //     return false;
-    //   }
-    // });
-    $("#cat").attr("src", data.items[randNum].media.m);
-  });
+  })
+    .done(function (data) {
+      let randNum = Math.floor(Math.random() * 21);
+      // $.each(data.items, function (i, item) {
+      //   $("<img>").attr("src", item.media.m).appendTo("#randomCat");
+      //   if (i === 5) {
+      //     return false;
+      //   }
+      // });
+      $("#cat").attr("src", data.items[randNum].media.m);
+    })
+    .fail(function () {
+      console.log("Error There was a problem");
+    });
 });
+
+// Using AXIOS for AJAX calls for triva
+const trivaUrl = "https://opentdb.com/api.php?amount=1";
+
+let getTrivaBtn = document.querySelector("#getTriva");
+let trivaQuestion = document.querySelector("#trivaQuestion");
+
+getTrivaBtn.addEventListener("click", function () {
+  axios
+    .get(trivaUrl)
+    .then(function (res) {
+      console.log(res.data.results[0].question);
+      let question = res.data.results[0].question;
+      let text = document.createTextNode(question);
+      trivaQuestion.append(text);
+    })
+    .catch(function () {
+      console.log("Error");
+    });
+});
+
+// Axios error handling
+const placeholderBtn = document.querySelector("#placeholderBtn");
+let section = document.querySelector("#comments");
+
+function sendRequest() {
+  axios
+    .get("https://jsonplaceholder.typicode.com/comments", {
+      params: {
+        postId: 1,
+      },
+    })
+    .then(addComments)
+    .catch(handleErrors);
+}
+
+function addComments(res) {
+  res.data.forEach(function (comment) {
+    appendComment(comment);
+  });
+}
