@@ -178,10 +178,10 @@ getTrivaBtn.addEventListener("click", function () {
   axios
     .get(trivaUrl)
     .then(function (res) {
-      console.log(res.data.results[0].question);
+      console.log(res.data.results[0]);
       let question = res.data.results[0].question;
-      let text = document.createTextNode(question);
-      trivaQuestion.append(text);
+      //let text = document.createTextNode(question);
+      trivaQuestion.innerHTML = question;
     })
     .catch(function () {
       console.log("Error");
@@ -192,6 +192,10 @@ getTrivaBtn.addEventListener("click", function () {
 const placeholderBtn = document.querySelector("#placeholderBtn");
 let section = document.querySelector("#comments");
 
+placeholderBtn.addEventListener("click", function () {
+  sendRequest();
+});
+
 function sendRequest() {
   axios
     .get("https://jsonplaceholder.typicode.com/comments", {
@@ -200,11 +204,96 @@ function sendRequest() {
       },
     })
     .then(addComments)
-    .catch(handleErrors);
+    .catch(handleErrorsAxios);
 }
 
 function addComments(res) {
   res.data.forEach(function (comment) {
     appendComment(comment);
   });
+}
+
+function appendComment(comment) {
+  console.log(comment);
+  const p = document.createElement("p");
+  var text = document.createTextNode(comment.email);
+  p.appendChild(text);
+  section.append(p);
+}
+
+// Ron Swanson
+
+const ronXhrBtn = document.querySelector("#ronXhr");
+const ronFetchBtn = document.querySelector("#ronFetch");
+const ronJqueryBtn = document.querySelector("#ronJquery");
+const ronAxiosBtn = document.querySelector("#ronAxios");
+const ronsQuote = document.querySelector("#ronsQuote");
+const ronsApiUrl = "https://ron-swanson-quotes.herokuapp.com/v2/quotes";
+
+// XHR
+ronXhrBtn.addEventListener("click", function () {
+  let XHR = new XMLHttpRequest();
+
+  XHR.onreadystatechange = function () {
+    if (XHR.readyState === 4 && XHR.status === 200) {
+      let responseQuote = JSON.parse(XHR.responseText);
+      ronsQuote.innerHTML = responseQuote;
+    }
+  };
+
+  XHR.open("GET", ronsApiUrl);
+  XHR.send();
+});
+
+// Fetch
+
+ronFetchBtn.addEventListener("click", function () {
+  fetch(ronsApiUrl)
+    .then(handleErrors)
+    .then((res) => res.json())
+    .then((data) => (ronsQuote.innerHTML = data))
+    .catch(printError);
+});
+
+// jQuery
+ronJqueryBtn.addEventListener("click", function () {
+  $.getJSON("https://ron-swanson-quotes.herokuapp.com/v2/quotes")
+    .done(function (data) {
+      console.log(data);
+      ronsQuote.innerHTML = data[0];
+    })
+    .fail(function (jqxhr, textStatus, error) {
+      var err = textStatus + ", " + error;
+      console.log("Request Failed: " + err);
+    });
+});
+
+// Axios
+
+ronAxiosBtn.addEventListener("click", function () {
+  axios
+    .get(ronsApiUrl)
+    .then(function (response) {
+      ronsQuote.innerHTML = response.data[0];
+    })
+    //.catch(handleErrorsAxios(err));
+    .catch(function (err) {
+      if (err.response) {
+        console.log("Problem with response", err.response.status);
+      } else if (err.request) {
+        console.log("Problem with request");
+      } else {
+        console.log("Error", err.message);
+      }
+    });
+});
+
+function handleErrorsAxios(err) {
+  if (err.response) {
+    console.log("Problem with Response ", err.response.status);
+  } else if (err.request) {
+    console.log("Problem with Request");
+  } else {
+    console.log("Error", err.message);
+  }
 }
